@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QSharpTestProject", "QSharpTestProject\QSharpTestProject.csproj", "{DC00883A-47DE-4E46-BFBA-4DFACD7CEE06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC00883A-47DE-4E46-BFBA-4DFACD7CEE06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC00883A-47DE-4E46-BFBA-4DFACD7CEE06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC00883A-47DE-4E46-BFBA-4DFACD7CEE06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC00883A-47DE-4E46-BFBA-4DFACD7CEE06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA56BBD4-DCAE-448A-845C-CEC7479C8C73}
+	EndGlobalSection
+EndGlobal
