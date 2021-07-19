@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QSharpTestProject", "QSharpTestProject1\QSharpTestProject.csproj", "{19BC5720-1B7C-43BC-9BDF-A896FEC50334}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "QiskitTestProject", "QiskitImplementation\QiskitTestProject.pyproj", "{18B179CB-557B-4C2F-806E-ED9BA22EAAB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19BC5720-1B7C-43BC-9BDF-A896FEC50334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19BC5720-1B7C-43BC-9BDF-A896FEC50334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19BC5720-1B7C-43BC-9BDF-A896FEC50334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19BC5720-1B7C-43BC-9BDF-A896FEC50334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B179CB-557B-4C2F-806E-ED9BA22EAAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B179CB-557B-4C2F-806E-ED9BA22EAAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BF0DA4B-CC51-408C-9BFA-2A3DB92D5B80}
+	EndGlobalSection
+EndGlobal
