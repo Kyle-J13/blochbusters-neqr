@@ -1,4 +1,4 @@
-# blochbusters-neqr-gqir
+# blochbusters-neqr
 
 ## Quick Navigation
 
