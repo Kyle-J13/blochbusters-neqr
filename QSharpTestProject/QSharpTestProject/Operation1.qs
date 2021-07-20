@@ -7,21 +7,44 @@
 
 
     operation Operation1 (grayScaleValues : Int[][]) : Unit {
-        for col in 0 .. Length(grayScaleValues)-1 {
-            //for row in 0 .. Length(grayScaleValues[,index]-1) {
-            //    let gsValue = grayScaleValues[row][col];
-            //    NEQRImageProcess(row, col, gsValue);
-            //}
+        mutable result = new Qubit[DoubleAsInt(Lg(IntAsDouble(grayScaleValues.GetLength(0))))];
+        ApplyToEach(H, result);
+        for col in 0 .. grayScaleValues.GetLength(0)-1 {
+            for row in 0 .. grayScaleValues.GetLength(0)-1 {
+                set (rowBinary, rowString) = convertToBinary(row);
+                set (colBinary, colString) = convertToBinary(col);
+                set indexBinary = new Qubit[0];
+                indexBinary.append(rowBinary);
+                indexBinary.append(colBinary);
+                set indexString = new Int[0];
+                indexString.append(rowString);
+                indexString.append(colString);
+                set (grayScaleBinary, grayScaleString) = convertToBinary(grayScaleValues[row][col]);
+                for index in 0 .. Length(indexString)-1 {
+                    if indexString[index] == 0 {
+                        X(indexBinary[index]);
+                    }
+                }
+                for index in 0 .. Length(grayScaleString)-1 {
+                    if grayScaleString[index] == 1 {
+                        Controlled X(indexBinary, grayScaleBinary[index]);
+                    }
+                }  
+                
+
+
+            }
+
+
         }
-
-
     }
 
     operation NEQRImageProcess (row: Int, col: Int, grayScaleValue: Int) : Unit {
+        set grayScaleBinary = convertToBinary(grayScaleValue);
         
     }
 
-    operation convertToBinary (value: Int) : Qubit[] {
+    operation convertToBinary (value: Int) : (Qubit[], Int[]) {
         mutable cBinary = new Int[0];
         repeat {
             cBinary.append(value % 2);
@@ -40,6 +63,6 @@
                 qubitArr.append(qubit1);
             }
         }
-        return qubitArr;
+        return (qubitArr, cBinary);
     }
 }
