@@ -6,12 +6,13 @@
     open Microsoft.Quantum.Convert;
 
     // TODO: Rename
-    operation Operation (
-        indexRegister : Qubit[], 
-        intensityRegister : Qubit[], 
-        grayScaleValues : Int[][]
-    ) : Unit {
-        fail("Not implimented.");
+    operation Operation (grayScaleValues : Int[][], intensity: Qubit[], indexPos: Qubit[]) : Unit {
+        for row in 0 .. grayScaleValues.GetLength(0) {
+            for col in 0 .. grayScaleValues.GetLength(0) {
+                ApplyToEach(H, indexPos);
+                NEQRImageProcess(indexPos, intensity, row, col, grayScaleValues[row][col]);
+            }
+        }    
     }
 
     operation NEQRImageProcess (
@@ -51,7 +52,6 @@
         // This should be the same length as the index register
         let indexBinary = rowBinary + colBinary;
 
-        // This shouldn't happen but it's
         if indexLen != Length(indexBinary) {
             fail("Input register has a different length than the binary representation.");
         }
