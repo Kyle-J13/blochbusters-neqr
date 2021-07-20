@@ -7,14 +7,7 @@
 
     // TODO: Rename
     operation Operation (grayScaleValues : Int[][]) : Unit {
-        for col in 0 .. Length(grayScaleValues)-1 {
-            //for row in 0 .. Length(grayScaleValues[,index]-1) {
-            //    let gsValue = grayScaleValues[row][col];
-            //    NEQRImageProcess(row, col, gsValue);
-            //}
-        }
-
-
+        fail("Not implimented.");
     }
 
     // TODO: Implemented
@@ -25,6 +18,7 @@
         col: Int, 
         grayScaleValue: Int
     ) : Unit {
+
         fail("Not implimented.");
     }
 
