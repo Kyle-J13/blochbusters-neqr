@@ -2,6 +2,7 @@
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
+    open QSharpTestProject;
 
     
     @Test("QuantumSimulator")
@@ -12,4 +13,12 @@
 
         Message("Test passed.");
     }
+
+
+    @Test("QuantumSimulator")
+    operation ArrayTest2x2 () : Unit {
+
+        
+    }
+
 }
