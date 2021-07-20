@@ -7,9 +7,9 @@
 
     // TODO: Rename
     operation Operation (grayScaleValues : Int[][], intensity: Qubit[], indexPos: Qubit[]) : Unit {
+        ApplyToEach(H, indexPos);
         for row in 0 .. Length(grayScaleValues[0])-1 {
             for col in 0 .. Length(grayScaleValues[0])-1 {
-                ApplyToEach(H, indexPos);
                 NEQRImageProcess(indexPos, intensity, row, col, grayScaleValues[row][col]);
             }
         }    
