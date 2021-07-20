@@ -6,7 +6,11 @@
     open Microsoft.Quantum.Convert;
 
     // TODO: Rename
-    operation Operation (grayScaleValues : Int[][]) : Unit {
+    operation Operation (
+        indexRegister : Qubit[], 
+        intensityRegister : Qubit[], 
+        grayScaleValues : Int[][]
+    ) : Unit {
         fail("Not implimented.");
     }
 
@@ -47,6 +51,7 @@
         // This should be the same length as the index register
         let indexBinary = rowBinary + colBinary;
 
+        // This shouldn't happen but it's
         if indexLen != Length(indexBinary) {
             fail("Input register has a different length than the binary representation.");
         }
