@@ -21,19 +21,20 @@
                 indexString.append(colString);
                 set (grayScaleBinary, grayScaleString) = convertToBinary(grayScaleValues[row][col]);
                 within {
+                    for index in 0 .. Length(indexString)-1 {
+                    if indexString[index] == 0 {
+                        X(indexBinary[index]);
+                    }
+                }
+                    
+                }
+                apply {
                     for index in 0 .. Length(grayScaleString)-1 {
                     if grayScaleString[index] == 1 {
                         Controlled X(indexBinary, grayScaleBinary[index]);
                     }
                 }
-                }
-                apply {
-                    
-                for index in 0 .. Length(indexString)-1 {
-                    if indexString[index] == 0 {
-                        X(indexBinary[index]);
-                    }
-                }
+                
                 }
                 
                   
