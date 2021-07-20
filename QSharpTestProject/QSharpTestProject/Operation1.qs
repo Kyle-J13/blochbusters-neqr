@@ -5,8 +5,8 @@
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Convert;
 
-
-    operation Operation1 (grayScaleValues : Int[][]) : Unit {
+    // TODO: Rename
+    operation Operation (grayScaleValues : Int[][]) : Unit {
         for col in 0 .. Length(grayScaleValues)-1 {
             //for row in 0 .. Length(grayScaleValues[,index]-1) {
             //    let gsValue = grayScaleValues[row][col];
@@ -17,29 +17,30 @@
 
     }
 
-    operation NEQRImageProcess (row: Int, col: Int, grayScaleValue: Int) : Unit {
-        
+    // TODO: Implemented
+    operation NEQRImageProcess (
+        indexRegister : Qubit[], 
+        grayscaleRegister : Qubit[], 
+        row: Int, 
+        col: Int, 
+        grayScaleValue: Int
+    ) : Unit {
+        fail("Not implimented.");
     }
 
-    operation convertToBinary (value: Int) : Qubit[] {
-        mutable cBinary = new Int[0];
-        repeat {
-            cBinary.append(value % 2);
-            let value = value / 2;
+    function convertToBinary (value: Int) : Bool[] {
+        mutable cBinary = new Bool[0];
+
+        // Save new variable so we can modify the value
+        mutable val = value;
+
+        // Standard conversion to binary
+        while (val != 0) {
+            set cBinary += [val % 2 != 0];
+            set val = value / 2;
         }
-        until value == 0;
-        mutable qubitArr = new Qubit[Length(cBinary)];
-        for cBit in cBinary {
-            if cBit == 0 {
-                use qubit0 = Qubit();
-                qubitArr.append(qubit0);
-            }
-            else {
-                use qubit1 = Qubit();
-                X(qubit1);
-                qubitArr.append(qubit1);
-            }
-        }
-        return qubitArr;
+
+        // Returns in big endian
+        return cBinary[Length(cBinary) .. -1 .. 0];
     }
 }
