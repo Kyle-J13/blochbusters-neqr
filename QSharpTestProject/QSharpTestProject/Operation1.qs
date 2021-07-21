@@ -31,7 +31,7 @@
         let indexLen = Length(indexRegister);
 
         // Binary representation of the grayscale value
-        let grayBinary = convertToBinary(grayscaleValue);
+        mutable grayBinary = convertToBinary(grayscaleValue);
 
         // Binary representation of the row and column
         // Ex.
@@ -53,6 +53,10 @@
             set colBinary = padWithZeros(colBinary, indexLen / 2);
         }
 
+        if Length(grayBinary) < Length(grayscaleRegister) {
+            set grayBinary = padWithZeros(grayBinary, Length(grayscaleRegister));
+        }
+
         // Combines the row and column binary strings into one binary string
         // Representing the entire index
         // This should be the same length as the index register
@@ -70,6 +74,7 @@
                 X(indexRegister[i]);
             }
         }
+
 
         //Message("2");
         //DumpRegister((), indexRegister);

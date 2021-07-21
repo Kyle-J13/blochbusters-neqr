@@ -36,7 +36,7 @@
         mutable values = new String[0];
 
         //These are the values that the encoded register should hold
-        mutable correctValues = ["0000000000","1011001000","0101100100","1111111111"];
+        mutable correctValues = ["0000000000","0111001000","1001100100","1111111111"];
 
         repeat 
         {
@@ -84,6 +84,9 @@
 
 		}until(i == 100 or uniqueNum == 4)
         fixup{}
+
+        Message($"Correct Values: {correctValues}");
+        Message($"Found Values: {values}");
 
         for correct in correctValues
         {
