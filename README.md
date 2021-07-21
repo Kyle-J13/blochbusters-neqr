@@ -13,7 +13,14 @@ Implement and analyze the Novel Enhanced Quantum Representation (NEQR) algorithm
 
 ## Notes
 The NEQR is limited to square images at a power of 2
+
 The NEQR is an improvement upon the Flexible Representation of Quantum Images (FRQI)
+
+The algoritm takes q+n1+n2 qubits where q is 2^q = grey scale range and n1/n2 are a 2^n1 X 2^n2 image
+
+The algoritm sould return a qubit register where the first n1+n2 qubits are the coordinates of the pixel and the next q qubits are the coresponding greyscale value
+
+
 
 ## References
 
