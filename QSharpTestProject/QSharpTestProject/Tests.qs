@@ -43,11 +43,14 @@
         {
             //Call encoding operation 
             Operation(_2dArray,intensity, index);
+
+            //Create a result array from the index+intensity qubit registers
             let resultArray = MultiM(index + intensity);
+
+            //Reset Qubits
             ResetAll(index + intensity);
 
-            //mutable resultArray = Operation2(_2dArray); 
-
+            //Convert result array to string
             mutable s = "";
             for value in resultArray
             {
@@ -66,6 +69,7 @@
 
             mutable contains = false;
 
+            //If new string is not unique set contains == true so it is not re-added
             for x in values
             {
                 if s == x
@@ -82,28 +86,32 @@
             }
 
             set i = i + 1; 
+        
 
-        }until(i == 100 or uniqueNum == 4)
+        //Repeat for 100 tries or four unique numbers. If you fail because i > 100 the implementation is either incorrect or you are very unlucky 
+		}until(i == 100 or uniqueNum == 4)
         fixup{}
 
         Message($"Correct Values: {correctValues}");
         Message($"Found Values: {values}");
 
-        for correct in correctValues
+
+        //Check for correct values
+        for value in values
         {
             mutable found = false; 
 
-            for value in values
+            for correct in correctValues
             {
                 if value == correct
                 {
-                    set found = true; 
+                    set found = true;
                 }
             }
 
             if found == false
             {
-                fail "Fail";
+                fail $"The value {value} is incorrect ";
             }
             
         }
