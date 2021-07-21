@@ -4,6 +4,7 @@
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Diagnostics;
 
     // TODO: Rename
     operation Operation (grayScaleValues : Int[][], intensity: Qubit[], indexPos: Qubit[]) : Unit {
@@ -22,6 +23,11 @@
         col : Int, 
         grayscaleValue: Int
     ) : Unit {
+        //Message("1");
+        //DumpRegister((), indexRegister);
+        //DumpRegister((), grayscaleRegister);
+        //Message("");
+
         let indexLen = Length(indexRegister);
 
         // Binary representation of the grayscale value
@@ -65,6 +71,11 @@
             }
         }
 
+        //Message("2");
+        //DumpRegister((), indexRegister);
+        //DumpRegister((), grayscaleRegister);
+        //Message("");
+
         // Controlled NOT with the entire index register as the control and 
         // the individual qubit of the grayscale register as the target
         for i in 0 .. Length(grayBinary) - 1 {
@@ -73,12 +84,21 @@
             }
         }
 
+        //Message("3");
+        //DumpRegister((), indexRegister);
+        //DumpRegister((), grayscaleRegister);
+
         // Return the index register to its original position
         for i in 0 .. Length(indexBinary) - 1 {
             if not indexBinary[i] {
                 X(indexRegister[i]);
             }
         }
+
+        //Message("4");
+        //DumpRegister((), indexRegister);
+        //DumpRegister((), grayscaleRegister);
+        //Message("");
     }
 
     function convertToBinary (value: Int) : Bool[] {
@@ -87,14 +107,18 @@
         // Save new variable so we can modify the value
         mutable val = value;
 
+        mutable run = true;
+
         // Standard conversion to binary
-        while (val != 0) {
+        while (run) {
             set cBinary += [val % 2 != 0];
-            set val = value / 2;
+            set val = val / 2;
+
+            set run = val != 0;
         }
 
         // Returns in big endian
-        return cBinary[Length(cBinary) .. -1 .. 0];
+        return cBinary[Length(cBinary) - 1 .. -1 .. 0];
     }
 
     function padWithZeros (binary : Bool[], targetLen : Int) : Bool[] {

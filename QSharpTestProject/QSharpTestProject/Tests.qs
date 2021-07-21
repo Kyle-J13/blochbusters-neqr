@@ -41,7 +41,7 @@
         repeat 
         {
             //Call encoding operation 
-            Operation(_2dArray, index, intensity);
+            Operation(_2dArray,intensity, index);
             let resultArray = MultiM(index + intensity);
             ResetAll(index + intensity);
 
