@@ -291,9 +291,9 @@
     operation RandomSizeAndIntensities () : Unit {
         
         // Loop through several sizes
-        for scaleExp in 1 .. 4 {
+        for scaleExp in 1 .. 3 {
             // Loop through several grayscale ranges
-            for rangeExp in 1 .. 4 {
+            for rangeExp in 1 .. 8 {
 
                 // The size of the conventional 2D array
                 mutable size = PowI(2, scaleExp);
@@ -377,7 +377,7 @@
 
                         set i = i + 1; 
 
-                    } until(i == 100 or uniqueNum == Length(correctValues))
+                    } until(i == 10000 or uniqueNum == Length(correctValues))
                     fixup{}
             }
 
