@@ -119,13 +119,13 @@
         
     }
 
-@Test("QuantumSimulator")
+    @Test("QuantumSimulator")
     operation RandomSizeAndIntensities () : Unit {
         
         // Loop through several sizes
-        for scaleExp in 1 .. 5 {
+        for scaleExp in 1 .. 4 {
             // Loop through several grayscale ranges
-            for rangeExp in 1 .. 8 {
+            for rangeExp in 1 .. 4 {
 
                 // The size of the conventional 2D array
                 mutable size = PowI(2, scaleExp);
@@ -209,7 +209,7 @@
 
                         set i = i + 1; 
 
-                    } until(i == 100 or uniqueNum == 4)
+                    } until(i == 100 or uniqueNum == Length(correctValues))
                     fixup{}
             }
 
