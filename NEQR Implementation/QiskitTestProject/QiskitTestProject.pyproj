@@ -23,7 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="QiskitQuantumOperation.py" />
-    <Compile Include="test_1.py">
+    <Compile Include="Qiskit_test.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
