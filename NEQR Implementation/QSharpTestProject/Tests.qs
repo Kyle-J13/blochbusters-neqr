@@ -6,6 +6,7 @@
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Random;
     open QSharpTestProject;
 
    
@@ -17,7 +18,7 @@
         mutable _2dArray = [
             [0, 200],
             [100, 255]
-		];
+        ];
 
         //Create index array of qubits 
         //The length of the index array is 2* the log base 2 of the size 
@@ -112,8 +113,141 @@
             {
                 fail $"The value {value} is incorrect ";
             }
+            
         }
         
     }
 
+    @Test("QuantumSimulator")
+    operation RandomSizeAndIntensities () : Unit {
+        
+        // Loop through several sizes
+        for scaleExp in 1 .. 3 {
+            // Loop through several grayscale ranges
+            for rangeExp in 0 .. 8 {
+
+                // The size of the conventional 2D array
+                mutable size = PowI(2, scaleExp);
+                // The range for this iteration
+                mutable grayscaleRange = PowI(2, rangeExp) - 1;
+
+                // Conventional array creation
+                // Shield your eyes
+
+                // The 2D array containing the pseudorandom values
+                mutable _2dRand = new Int[][0];
+
+                // Populate the array with random values in range
+                for row in 0 .. size {
+                    mutable tempArr = new Int[0];
+                    for col in 0 .. size {
+                        set tempArr += [DrawRandomInt(0, grayscaleRange)];
+                    }
+
+                    set _2dRand += [tempArr];
+                }
+
+                mutable i = 0;
+                mutable uniqueNum = 0;
+                mutable values = new String[0];
+
+                mutable correctValues = FindCorrectValues(_2dRand, rangeExp);
+
+                use (intensity, index) = (
+                    Qubit[PowI(2, rangeExp)], 
+                    Qubit[2 * scaleExp]
+                ) {
+
+                
+
+                    // Quantum stuff 
+                    repeat {
+                        //Call encoding operation 
+                        Operation(_2dRand, intensity, index);
+                        let s = BoolArrayToString(
+                            ResultArrayAsBoolArray(
+                                MultiM(index + intensity)
+                            )
+                        );
+                        ResetAll(index + intensity);
+
+                        //mutable resultArray = Operation2(_2dArray); 
+
+                        Message($"Measured: {s}");
+
+                        mutable contains = false;
+
+                        for x in values {
+                            if x == s {
+                                set contains = true;
+                            }
+                        }
+
+                        if contains == false {
+                            set values += [s];
+                            set uniqueNum = uniqueNum + 1;
+                            Message($"{s} was a unique value");
+                        }
+
+                        set i = i + 1; 
+
+                    } until(i == 100 or uniqueNum == 4)
+                    fixup{}
+            }
+
+                Message($"Correct Values: {correctValues}");
+                Message($"Found Values: {values}");
+
+                for correct in correctValues {
+                    mutable found = false; 
+
+                    for value in values {
+                        if value == correct {
+                            set found = true; 
+                        }
+                    }
+
+                    if found == false {
+                        fail "Fail";
+                    }
+                    
+                }
+
+            }
+        }
+    }
+
+    function FindCorrectValues(_2dArray : Int[][], length : Int) : String[] {
+        mutable correctValuesBool = new Bool[][0];
+
+        for row in 0 .. Length(_2dArray) - 1 {
+            for col in 0 .. Length(_2dArray[row]) - 1 {
+                mutable index = convertToBinary(row);
+                set index += convertToBinary(col);
+                set correctValuesBool += [index + convertToBinary(_2dArray[row][col])];
+            }
+        }
+
+        for i in 0 .. Length(correctValuesBool) - 1 {
+            set correctValuesBool w/= i <- padWithZeros(correctValuesBool[i], length);
+        }
+
+        mutable correctValues = new String[0];
+
+        for array in correctValuesBool {
+            set correctValues += [BoolArrayToString(array)];
+        }
+
+        return correctValues;
+    }
+
+    function BoolArrayToString(array : Bool[]) : String {
+        mutable s = "";
+
+        for item in array {
+            set s += item ? "1" | "0";
+        }
+
+        return s;
+    }
 }
