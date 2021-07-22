@@ -14,21 +14,21 @@
     operation ArrayTest2x2 () : Unit {
         
 
-        //Create 2d array
+        // Create 2d array
         mutable _2dArray = [
             [0, 200],
             [100, 255]
         ];
 
-        //Create index array of qubits 
-        //The length of the index array is 2* the log base 2 of the size 
-        //Ex a 2x2 is 2*logbase2(2) = 2
+        // Create index array of qubits 
+        // The length of the index array is 2* the log base 2 of the size 
+        // Ex a 2x2 is 2*logbase2(2) = 2
         let indexLength = 2 * Round(Lg(IntAsDouble(Length(_2dArray))));
         use index = Qubit[indexLength];
 
-        //Intensity index for holding the greyscale values
-        //Length is 2^q = size of scale 
-        //Ex greyscale of 256 2^8 = 256
+        // Intensity index for holding the greyscale values
+        // Length is 2^q = size of scale 
+        // Ex greyscale of 256 2^8 = 256
         use intensity = Qubit[8];
 
 
@@ -36,21 +36,21 @@
         mutable uniqueNum = 0;
         mutable values = new String[0];
 
-        //These are the values that the encoded register should hold
+        // These are the values that the encoded register should hold
         mutable correctValues = ["0000000000","0111001000","1001100100","1111111111"];
 
         repeat 
         {
-            //Call encoding operation 
+            // Call encoding operation 
             Operation(_2dArray,intensity, index);
 
-            //Create a result array from the index+intensity qubit registers
+            // Create a result array from the index+intensity qubit registers
             let resultArray = MultiM(index + intensity);
 
-            //Reset Qubits
+            // Reset Qubits
             ResetAll(index + intensity);
 
-            //Convert result array to string
+            // Convert result array to string
             mutable s = "";
             for value in resultArray
             {
@@ -69,7 +69,7 @@
 
             mutable contains = false;
 
-            //If new string is not unique set contains == true so it is not re-added
+            // If new string is not unique set contains == true so it is not re-added
             for x in values
             {
                 if s == x
@@ -88,7 +88,8 @@
             set i = i + 1; 
         
 
-        //Repeat for 100 tries or four unique numbers. If you fail because i > 100 the implementation is either incorrect or you are very unlucky 
+        // Repeat for 100 tries or four unique numbers. If you fail because
+        // i > 100 the implementation is either incorrect or you are very unlucky 
 		}until(i == 100 or uniqueNum == 4)
         fixup{}
 
@@ -122,25 +123,25 @@
     operation RandomSizeAndIntensities () : Unit {
         
         // Loop through several sizes
-        for scaleExp in 1 .. 3 {
+        for scaleExp in 1 .. 5 {
             // Loop through several grayscale ranges
-            for rangeExp in 0 .. 8 {
+            for rangeExp in 1 .. 8 {
 
                 // The size of the conventional 2D array
                 mutable size = PowI(2, scaleExp);
                 // The range for this iteration
                 mutable grayscaleRange = PowI(2, rangeExp) - 1;
 
-                // Conventional array creation
-                // Shield your eyes
+                // Conventional array creation in Q#
+                // Shield your eyes children
 
                 // The 2D array containing the pseudorandom values
                 mutable _2dRand = new Int[][0];
 
                 // Populate the array with random values in range
-                for row in 0 .. size {
+                for row in 0 .. size - 1 {
                     mutable tempArr = new Int[0];
-                    for col in 0 .. size {
+                    for col in 0 .. size - 1 {
                         set tempArr += [DrawRandomInt(0, grayscaleRange)];
                     }
 
@@ -150,14 +151,31 @@
                 mutable i = 0;
                 mutable uniqueNum = 0;
                 mutable values = new String[0];
+                mutable indexLength = 2 * scaleExp;
 
-                mutable correctValues = FindCorrectValues(_2dRand, rangeExp);
+                // Length to pad to is the number of intensity qubits
+                // plus the number of index qubits
+                mutable correctValues = FindCorrectValues(
+                    _2dRand, rangeExp, indexLength
+                );
 
                 use (intensity, index) = (
-                    Qubit[PowI(2, rangeExp)], 
-                    Qubit[2 * scaleExp]
+                    Qubit[rangeExp], 
+                    Qubit[indexLength]
                 ) {
+                    Message($"Grayscale Range: {grayscaleRange} ({rangeExp} qubits)");
+                    Message($"Index Length: {indexLength}");
+                    Message("");
 
+                    Message("2D Array: ");
+                    
+                    for line in _2dRand {
+                        Message($"{line}");
+                    }
+
+                    Message($"Correct Values: {correctValues}");
+
+                    DumpRegister((), index);
                 
 
                     // Quantum stuff 
@@ -198,39 +216,57 @@
                 Message($"Correct Values: {correctValues}");
                 Message($"Found Values: {values}");
 
-                for correct in correctValues {
+                for value in values {
                     mutable found = false; 
 
-                    for value in values {
+                    for correct in correctValues {
                         if value == correct {
-                            set found = true; 
+                            set found = true;
                         }
                     }
 
                     if found == false {
-                        fail "Fail";
+                        fail $"The value {value} is incorrect ";
                     }
                     
                 }
+
+                
+                Message("Found!");
+                Message("\n");
 
             }
         }
     }
 
-    function FindCorrectValues(_2dArray : Int[][], length : Int) : String[] {
+    function FindCorrectValues(
+        _2dArray : Int[][], 
+        regLength : Int, 
+        indexLength : Int
+    ) : String[] {
         mutable correctValuesBool = new Bool[][0];
 
         for row in 0 .. Length(_2dArray) - 1 {
             for col in 0 .. Length(_2dArray[row]) - 1 {
-                mutable index = convertToBinary(row);
-                set index += convertToBinary(col);
-                set correctValuesBool += [index + convertToBinary(_2dArray[row][col])];
+                // Create index values and pad with zeros
+                mutable index = padWithZeros(convertToBinary(row), indexLength/2);
+                set index += padWithZeros(convertToBinary(col), indexLength/2);
+
+                //Message($"Index for {row}, {col}: {index}");
+
+                set correctValuesBool += [
+                    index + 
+                    padWithZeros(
+                        convertToBinary(_2dArray[row][col]), regLength
+                    )
+                ];
             }
         }
 
-        for i in 0 .. Length(correctValuesBool) - 1 {
-            set correctValuesBool w/= i <- padWithZeros(correctValuesBool[i], length);
-        }
+        // Message("Array before padding:");
+        // for line in correctValuesBool {
+        //     Message($"{line}");
+        // }
 
         mutable correctValues = new String[0];
 
