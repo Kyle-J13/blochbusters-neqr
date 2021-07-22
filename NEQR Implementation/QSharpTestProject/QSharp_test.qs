@@ -119,7 +119,7 @@
         
     }
 
-    @Test("QuantumSimulator")
+@Test("QuantumSimulator")
     operation RandomSizeAndIntensities () : Unit {
         
         // Loop through several sizes
