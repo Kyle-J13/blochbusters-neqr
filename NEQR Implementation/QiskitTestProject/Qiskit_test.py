@@ -83,6 +83,43 @@ class Qiskit_test(unittest.TestCase):
 
         circuit = QiskitQuantumOperation.operation(_2dArray)
 
+        resultValues = []
+        
+
+        simulator = Aer.get_backend('aer_simulator')
+        simulation = execute(circuit, simulator, shots=1000)
+        result = simulation.result()
+        counts = result.get_counts(circuit)
+
+        unique_num = 0
+        for(state, count) in counts.items():
+                big_endian_state = state[::-1]
+                states = big_endian_state.split(' ')
+                index_state = states[0]
+                intensity_state = states[1]
+                value = index_state+intensity_state
+                print("Found value:", value)
+
+                if value in resultValues:
+                    pass
+                else:
+                    resultValues += (index_state+intensity_state)
+                    unique_num+=1
+                    print("Value:", value, "was unique!")
+
+                if unique_num == 16:
+                    break
+
+        print("Correct values:", correctValues)
+        print("Result values:", resultValues)
+
+        for result in resultValues:
+            contains = False
+            if result in correctValues:
+                contains = True
+            if contains == False:
+                self.fail("The value ", result, " is incorrect")
+
 
 # # # # # # # # # # # # # 
 #   Helper Functions    #
