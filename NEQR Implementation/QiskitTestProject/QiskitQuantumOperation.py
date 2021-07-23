@@ -1,6 +1,7 @@
 from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
 from qiskit import execute
 from qiskit import Aer
+from qiskit.circuit.quantumregister import AncillaRegister
 import QiskitQuantumOperation
 import random
 import math
@@ -23,8 +24,8 @@ def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
         for col in range(0, len(grayScaleValues[0])):
             neqrImageProcess(circuit, indexLen, row, col, grayScaleValues[row][col])
 
-    #print()
-    #print(circuit.draw())
+    print()
+    print(circuit.draw())
 
     return circuit
     
@@ -60,7 +61,7 @@ def neqrImageProcess (
 
     for i in range(len(grayBinary)):
         if grayBinary[i]:
-            circuit.ccx(circuit.qregs[0][0], circuit.qregs[0][1], circuit.qregs[1][i]) 
+            circuit.mcx(circuit.qregs[0], circuit.qregs[1][i]) 
 
     for i in range(len(indexBinary)):
         if not indexBinary[i]:
@@ -78,7 +79,17 @@ def convertToBinary (value : int) -> List[bool]:
 
         value = value // 2
 
-    return cBinary
+    return cBinary[::-1]
+
+#def controlledX(target : QuantumRegister, circuit : QuantumCircuit, *controls : QuantumRegister):
+#    controlLength = len(controls)
+#    if controlLength > 2:
+#        circuit.ccx(controls[0], controls[1], target)
+#    else:
+#        
+#
+#        a = AncillaRegister()
+#        if not circuit.has_register(a)
 
 def padWithZeros(binary : Union[List, str], length : int, BE=True) -> Union[List, str]:
     """Pad a given sequence with 0's and return it
