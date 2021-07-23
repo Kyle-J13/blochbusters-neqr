@@ -69,6 +69,8 @@ class Qiskit_test(unittest.TestCase):
                 if unique_num == 4:
                     break
                 
+        resultValues.sort(key=lambda x: int(x, 2))        
+
         # Print the results
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
@@ -134,10 +136,13 @@ class Qiskit_test(unittest.TestCase):
                 if unique_num == 16:
                     # All unique values have been found
                     break
+        
+        resultValues.sort(key=lambda x: int(x, 2))
 
         # Print the results
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
+
 
         if len(correctValues) != len(resultValues):
             self.fail("There are more or less result values than there are unique values.")

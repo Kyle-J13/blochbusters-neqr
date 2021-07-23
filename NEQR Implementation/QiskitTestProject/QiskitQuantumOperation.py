@@ -23,8 +23,8 @@ def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
         for col in range(0, len(grayScaleValues[0])):
             neqrImageProcess(circuit, indexLen, row, col, grayScaleValues[row][col])
 
-    print()
-    print(circuit.draw())
+    #print()
+    #print(circuit.draw())
 
     return circuit
     
