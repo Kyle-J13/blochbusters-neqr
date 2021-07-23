@@ -39,6 +39,9 @@ class Qiskit_test(unittest.TestCase):
         # Make the circuit
         circuit = QiskitQuantumOperation.operation(_2dArray)
 
+        circuit.measure(circuit.qregs[0], circuit.cregs[0])
+        circuit.measure(circuit.qregs[1], circuit.cregs[1])
+
         # Run the sim 100 times
         simulator = Aer.get_backend('aer_simulator')
         simulation = execute(circuit, simulator, shots=100)
@@ -52,31 +55,37 @@ class Qiskit_test(unittest.TestCase):
                 index_state = states[0]
                 intensity_state = states[1]
                 value = index_state+intensity_state
-                print("Found value:", value)
+                print("Found value:", value, " It was found",count,"times")
 
                 # Check if it's unique
                 if value in resultValues:
                     pass
                 else:
-                    resultValues += (index_state+intensity_state)
+                    resultValues.append(index_state+intensity_state)
                     unique_num+=1
                     print("Value:", value, "was unique!")
 
                 # Check if we've found all the values
                 if unique_num == 4:
                     break
-        
+                
+        resultValues.sort(key=lambda x: int(x, 2))        
+
         # Print the results
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
 
+
+        if len(correctValues) != len(resultValues):
+            self.fail("There are more or less result values than there are unique values.")
+
         # Make sure all of the values are correct
         for result in resultValues:
-            contains = False
-            if result in correctValues:
-                contains = True
-            if contains == False:
+            if result not in correctValues:
                 self.fail(f"The value {result} is incorrect")
+
+        print("Done!\n")
+                
 
     def test_4x4(self):
         # 2-Dimensional array
@@ -92,6 +101,9 @@ class Qiskit_test(unittest.TestCase):
 
         # Create the circuit with the qiskit function
         circuit = QiskitQuantumOperation.operation(_2dArray)
+
+        circuit.measure(circuit.qregs[0], circuit.cregs[0])
+        circuit.measure(circuit.qregs[1], circuit.cregs[1])
 
         # Run the simulation
         simulator = Aer.get_backend('aer_simulator')
@@ -117,26 +129,30 @@ class Qiskit_test(unittest.TestCase):
                     pass
                 else:
                     # A unique value was found
-                    resultValues += (index_state+intensity_state)
+                    resultValues.append(index_state+intensity_state)
                     unique_num+=1
                     print("Value:", value, "was unique!")
 
                 if unique_num == 16:
                     # All unique values have been found
                     break
+        
+        resultValues.sort(key=lambda x: int(x, 2))
 
         # Print the results
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
 
-        # Make sure all the results are correct
+
+        if len(correctValues) != len(resultValues):
+            self.fail("There are more or less result values than there are unique values.")
+
+        # Make sure all of the values are correct
         for result in resultValues:
-            contains = False
-            if result in correctValues:
-                contains = True
-            if contains == False:
+            if result not in correctValues:
                 self.fail(f"The value {result} is incorrect")
 
+        print("Done!\n")
 
 # # # # # # # # # # # # # 
 #   Helper Functions    #

@@ -12,6 +12,7 @@
     <Name>QiskitTestProject</Name>
     <RootNamespace>QiskitTestProject</RootNamespace>
     <InterpreterId>CondaEnv|CondaEnv|qiskit-env</InterpreterId>
+    <TestFramework>unittest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
