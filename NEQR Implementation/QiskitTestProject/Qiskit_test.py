@@ -10,7 +10,7 @@ import QiskitQuantumOperation
 import random
 import math
 
-from typing import List, Sequence
+from typing import List, Sequence, Union
 
 class Qiskit_test(unittest.TestCase):
     def test_2x2(self):
@@ -76,7 +76,7 @@ class Qiskit_test(unittest.TestCase):
             if result in correctValues:
                 contains = True
             if contains == False:
-                self.fail("The value ", result, " is incorrect")
+                self.fail(f"The value {result} is incorrect")
 
     def test_4x4(self):
         # 2-Dimensional array
@@ -135,7 +135,7 @@ class Qiskit_test(unittest.TestCase):
             if result in correctValues:
                 contains = True
             if contains == False:
-                self.fail("The value ", result, " is incorrect")
+                self.fail(f"The value {result} is incorrect")
 
 
 # # # # # # # # # # # # # 
@@ -246,12 +246,12 @@ def intToBinaryString(integer : int) -> str:
 
     return rtn[::-1]
         
-def padWithZeros(binary : Sequence, length : int, BE=True) -> Sequence:
+def padWithZeros(binary : Union[List, str], length : int, BE=True) -> Union[List, str]:
     """Pad a given sequence with 0's and return it
 
     Parameters
     ----------
-    binary : Sequence
+    binary : List | str
         A sequence (usually list or string) representing a binary number
     length : int
         The target length
@@ -260,7 +260,7 @@ def padWithZeros(binary : Sequence, length : int, BE=True) -> Sequence:
 
     Returns
     -------
-    Sequence
+    List | str
         A sequence padded with zeros that has the same type as the `binary`
         parameter.
     """
@@ -275,8 +275,13 @@ def padWithZeros(binary : Sequence, length : int, BE=True) -> Sequence:
     diff = length - len(binary)
 
     for i in range(diff):
-        # Convert binary 0 into whatever type the 
-        binary += tp(0b0)
+        if tp == str:
+            # Convert binary 0 into whatever type the number is stored in
+            binary += "0"
+        else:
+            # If there is an "outer type" 
+            # Ex. Lists & tuples
+            binary += [False]
 
     # Flip it back
     if BE:
