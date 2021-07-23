@@ -23,6 +23,9 @@ def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
         for col in range(0, len(grayScaleValues[0])):
             neqrImageProcess(circuit, indexLen, row, col, grayScaleValues[row][col])
 
+    print()
+    print(circuit.draw())
+
     return circuit
     
 def neqrImageProcess (
@@ -51,17 +54,18 @@ def neqrImageProcess (
     if lengthIndex != len(indexBinary):
         print("Fail because binary length not equal to required index length")
 
-    for i in range(0, len(indexBinary)):
+    for i in range(len(indexBinary)):
         if not indexBinary[i]:
             circuit.x(circuit.qregs[0][i])
 
-    for i in range(0, 8):
+    for i in range(len(grayBinary)):
         if grayBinary[i]:
-            circuit.cx(circuit.qregs[0], circuit.qregs[1][i]) # think intensity is the right register? not sure though
+            circuit.ccx(circuit.qregs[0][0], circuit.qregs[0][1], circuit.qregs[1][i]) 
 
-    for i in range(0, len(indexBinary)):
+    for i in range(len(indexBinary)):
         if not indexBinary[i]:
             circuit.x(circuit.qregs[0][i])
+            
 
 def convertToBinary (value : int) -> List[bool]:
     cBinary = []

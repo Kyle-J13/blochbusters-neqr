@@ -39,6 +39,9 @@ class Qiskit_test(unittest.TestCase):
         # Make the circuit
         circuit = QiskitQuantumOperation.operation(_2dArray)
 
+        circuit.measure(circuit.qregs[0], circuit.cregs[0])
+        circuit.measure(circuit.qregs[1], circuit.cregs[1])
+
         # Run the sim 100 times
         simulator = Aer.get_backend('aer_simulator')
         simulation = execute(circuit, simulator, shots=100)
@@ -96,6 +99,9 @@ class Qiskit_test(unittest.TestCase):
 
         # Create the circuit with the qiskit function
         circuit = QiskitQuantumOperation.operation(_2dArray)
+
+        circuit.measure(circuit.qregs[0], circuit.cregs[0])
+        circuit.measure(circuit.qregs[1], circuit.cregs[1])
 
         # Run the simulation
         simulator = Aer.get_backend('aer_simulator')
