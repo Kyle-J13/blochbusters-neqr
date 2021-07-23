@@ -41,7 +41,7 @@ class Qiskit_test(unittest.TestCase):
 
         # Run the sim 100 times
         simulator = Aer.get_backend('aer_simulator')
-        simulation = execute(circuit, simulator, shots=500)
+        simulation = execute(circuit, simulator, shots=100)
         result = simulation.result()
         counts = result.get_counts(circuit)
 
@@ -58,30 +58,29 @@ class Qiskit_test(unittest.TestCase):
                 if value in resultValues:
                     pass
                 else:
-                    resultValues += [value]
-                    unique_num = unique_num + 1 
+                    resultValues.append(index_state+intensity_state)
+                    unique_num+=1
                     print("Value:", value, "was unique!")
 
                 # Check if we've found all the values
                 if unique_num == 4:
                     break
-        
+                
         # Print the results
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
 
-        #Fail if you did not find all 4 unique cases
-        if unique_num != 4:
-            self.fail("Did not find all correct values")
+
+        if len(correctValues) != len(resultValues):
+            self.fail("There are more or less result values than there are unique values.")
 
         # Make sure all of the values are correct
         for result in resultValues:
-            contains = False
-            if result in correctValues:
-                contains = True
-            if contains == False:
-                print("The value {} is incorrect".format(result))
-                self.fail()
+            if result not in correctValues:
+                self.fail(f"The value {result} is incorrect")
+
+        print("Done!\n")
+                
 
     def test_4x4(self):
         # 2-Dimensional array
@@ -122,7 +121,7 @@ class Qiskit_test(unittest.TestCase):
                     pass
                 else:
                     # A unique value was found
-                    resultValues += (index_state+intensity_state)
+                    resultValues.append(index_state+intensity_state)
                     unique_num+=1
                     print("Value:", value, "was unique!")
 
@@ -134,14 +133,15 @@ class Qiskit_test(unittest.TestCase):
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
 
-        # Make sure all the results are correct
+        if len(correctValues) != len(resultValues):
+            self.fail("There are more or less result values than there are unique values.")
+
+        # Make sure all of the values are correct
         for result in resultValues:
-            contains = False
-            if result in correctValues:
-                contains = True
-            if contains == False:
+            if result not in correctValues:
                 self.fail(f"The value {result} is incorrect")
 
+        print("Done!\n")
 
 # # # # # # # # # # # # # 
 #   Helper Functions    #
