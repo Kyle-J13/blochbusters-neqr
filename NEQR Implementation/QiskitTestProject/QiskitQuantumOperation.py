@@ -25,8 +25,8 @@ def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
             neqrImageProcess(circuit, indexLen, row, col, grayScaleValues[row][col])
             circuit.barrier()
 
-    print()
-    print(circuit.draw(output='mpl',fold=-1, interactive=True, initial_state=True))
+    #print()
+    #print(circuit.draw(output='mpl',fold=-1, interactive=True, initial_state=True))
 
     return circuit
     
