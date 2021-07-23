@@ -11,10 +11,10 @@ from typing import Sequence, List, Union
 
 def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
     indexLen = 2 * round(math.log(len(grayScaleValues[0]), 2))
-    indexPos = QuantumRegister(indexLen)
-    intensity = QuantumRegister(8)
-    index_measurement = ClassicalRegister(indexLen)
-    intensity_measurement = ClassicalRegister(8)
+    indexPos = QuantumRegister(indexLen, "idx")
+    intensity = QuantumRegister(8, "intensity")
+    index_measurement = ClassicalRegister(indexLen, "idxM")
+    intensity_measurement = ClassicalRegister(8, "intensityM")
 
     # not quite sure what to do with the measurements??
     circuit = QuantumCircuit(indexPos, intensity, index_measurement, intensity_measurement, name="NEQR")
@@ -23,9 +23,10 @@ def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
     for row in range(0, len(grayScaleValues[0])):
         for col in range(0, len(grayScaleValues[0])):
             neqrImageProcess(circuit, indexLen, row, col, grayScaleValues[row][col])
+            circuit.barrier()
 
     print()
-    print(circuit.draw())
+    print(circuit.draw(output='mpl',fold=-1, interactive=True, initial_state=True))
 
     return circuit
     
@@ -79,7 +80,7 @@ def convertToBinary (value : int) -> List[bool]:
 
         value = value // 2
 
-    return cBinary[::-1]
+    return cBinary
 
 #def controlledX(target : QuantumRegister, circuit : QuantumCircuit, *controls : QuantumRegister):
 #    controlLength = len(controls)
