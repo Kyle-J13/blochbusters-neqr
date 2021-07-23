@@ -70,16 +70,16 @@ class Qiskit_test(unittest.TestCase):
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
 
-        self.assertEquals(
-            unique_num, 
-            len(resultValues), 
-            "There are more or less result values than there are unique values."
-            )
+
+        if len(correctValues) != len(resultValues):
+            self.fail("There are more or less result values than there are unique values.")
 
         # Make sure all of the values are correct
         for result in resultValues:
             if result not in correctValues:
                 self.fail(f"The value {result} is incorrect")
+
+        print("Done!\n")
                 
 
     def test_4x4(self):
@@ -133,17 +133,15 @@ class Qiskit_test(unittest.TestCase):
         print("Correct values:", correctValues)
         print("Result values:", resultValues)
 
-        self.assertEquals(
-            unique_num, 
-            len(resultValues), 
-            "There are more or less result values than there are unique values."
-            )
+        if len(correctValues) != len(resultValues):
+            self.fail("There are more or less result values than there are unique values.")
 
         # Make sure all of the values are correct
         for result in resultValues:
             if result not in correctValues:
                 self.fail(f"The value {result} is incorrect")
 
+        print("Done!\n")
 
 # # # # # # # # # # # # # 
 #   Helper Functions    #
