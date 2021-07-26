@@ -168,7 +168,7 @@ class Qiskit_test(unittest.TestCase):
             # 1D array with random values 
             tempArr = []   
             for val in range(0, size*size):
-                randGrayscaleRange = random.randint(0, grayscaleRange)
+                randGrayscaleRange = random.randint(0, grayscaleRange-1)
                 tempArr.append(randGrayscaleRange)
   
             # resize to 2d array
