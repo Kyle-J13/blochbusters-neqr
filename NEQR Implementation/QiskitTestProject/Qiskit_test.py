@@ -9,6 +9,7 @@ from qiskit import Aer
 import QiskitQuantumOperation
 import random
 import math
+import numpy as np
 
 from typing import List, Sequence, Union
 
@@ -169,14 +170,14 @@ class Qiskit_test(unittest.TestCase):
 
                 # 1D array with random values 
                 tempArr = []   
-                for grayscaleVal in range(0, size*size):
+                for val in range(0, size*size):
                     randGrayscaleRange = random.randint(0, grayscaleRange)
                     tempArr.append(randGrayscaleRange)
   
                 # resize to 2d array
                 _2dRand = np.resize(tempArr, (size, size))
-       
-                # work in progress down here
+
+                #work in progress from here
                 correctValues = FindCorrectValues(_2dRand, rangeExp, indexLength)
 
                 print("Grayscale Range:", grayscaleRange, "(", rangeExp, "qubits)")
@@ -184,11 +185,9 @@ class Qiskit_test(unittest.TestCase):
                 print("")
 
                 print ("2D Array:")
+                print(_2dRand)
 
                 print("Correct Values:", correctValues)
-
-
-
 
 
 # # # # # # # # # # # # # 
