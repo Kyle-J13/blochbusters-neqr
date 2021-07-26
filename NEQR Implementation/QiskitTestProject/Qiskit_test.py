@@ -3,12 +3,12 @@ import os
 import sys
 sys.path.insert(1, os.path.realpath(os.path.pardir))
 
-from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
 from qiskit import execute
 from qiskit import Aer
 import QiskitQuantumOperation
 import random
 import math
+import numpy as np
 
 from typing import List, Sequence, Union
 
@@ -153,6 +153,41 @@ class Qiskit_test(unittest.TestCase):
                 self.fail(f"The value {result} is incorrect")
 
         print("Done!\n")
+
+        
+    def RandomSizeAndIntensities(self):
+
+        # Loop through several sizes
+        for scaleExp in range(1, 4):
+            # Loop through several grayscale ranges
+            for rangeExp in range(1, 9):
+                
+                # The size of the conventional 2D array
+                size = 2 ** scaleExp
+                # The range for this iteration
+                grayscaleRange = 2 ** rangeExp
+
+                # 1D array with random values 
+                tempArr = []   
+                for val in range(0, size*size):
+                    randGrayscaleRange = random.randint(0, grayscaleRange)
+                    tempArr.append(randGrayscaleRange)
+  
+                # resize to 2d array
+                _2dRand = np.resize(tempArr, (size, size))
+
+                #work in progress from here
+                correctValues = FindCorrectValues(_2dRand, rangeExp, indexLength)
+
+                print("Grayscale Range:", grayscaleRange, "(", rangeExp, "qubits)")
+                print("Index Lenngth:", indexLength)
+                print("")
+
+                print ("2D Array:")
+                print(_2dRand)
+
+                print("Correct Values:", correctValues)
+
 
 # # # # # # # # # # # # # 
 #   Helper Functions    #

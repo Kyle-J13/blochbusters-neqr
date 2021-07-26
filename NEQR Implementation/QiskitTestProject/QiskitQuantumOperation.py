@@ -1,12 +1,7 @@
 from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
-from qiskit import execute
-from qiskit import Aer
-from qiskit.circuit.quantumregister import AncillaRegister
-import QiskitQuantumOperation
-import random
 import math
 
-from typing import Sequence, List, Union
+from typing import List, Union
 
 
 def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
@@ -26,11 +21,11 @@ def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
     
     Circuit Information
     -------------------
+        * The circuit does not have any measurement gates
         * The index register is qregs[0]
         * The grayscale intensity register is qregs[1]
         * The index measurement register is cregs[0]
         * The grayscale intensity measurement register is cregs[1]
-
     """
     indexLen = 2 * round(math.log(len(grayScaleValues[0]), 2))
     indexPos = QuantumRegister(indexLen, "idx")
