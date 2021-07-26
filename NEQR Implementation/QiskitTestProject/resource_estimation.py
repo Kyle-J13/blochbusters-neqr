@@ -16,11 +16,16 @@ from typing import Sequence, List, Union
 # Build the circuit
 start = perf_counter()
 
+#_2dArray = [
+ #           [182, 200 , 1   , 50 ],
+ #           [255, 75  , 175 , 200],
+ #           [85 , 170 , 0   , 220],
+  #          [20 , 245 , 135 , 140]
+#        ]
+
 _2dArray = [
-            [182, 200 , 1   , 50 ],
-            [255, 75  , 175 , 200],
-            [85 , 170 , 0   , 220],
-            [20 , 245 , 135 , 140]
+            [0, 200],
+            [100, 255]
         ]
 
 
@@ -161,11 +166,13 @@ def padWithZeros(binary : Union[List, str], length : int, BE=True) -> Union[List
 
 
 circuit = operation(_2dArray)
+circuit.measure(circuit.qregs[0], circuit.cregs[0])
+circuit.measure(circuit.qregs[1], circuit.cregs[1])
 
 
 end = perf_counter()
 print(f"Circuit construction took {(end - start)} sec.")
-print(circuit)
+# print(circuit)
 
 # Get the number of qubits needed to run the circuit
 active_qubits = {}
@@ -192,7 +199,7 @@ start = perf_counter()
 circuit = transpile(circuit, backend=montreal_backend, optimization_level=1)
 end = perf_counter()
 print(f"Compiling and optimizing took {(end - start)} sec.")
-print(circuit)
+# print(circuit)
 
 # Get the number of qubits needed to run the circuit
 active_qubits = {}
@@ -206,13 +213,18 @@ print(f"Width: {len(active_qubits)} qubits")
 print(f"Depth: {circuit.depth()}")
 print(f"Gate counts: {circuit.count_ops()}")
 
-# Simulate a run on Santiago, using its real gate information to model the output with real errors
+# Simulate a run on Montreal, using its real gate information to model the output with real errors
 montreal_sim = AerSimulator.from_backend(montreal_backend)
 result = montreal_sim.run(circuit).result()
 counts = result.get_counts(circuit)
-for(measured_state, count) in counts.items():
-    big_endian_state = measured_state[::-1]
-    print(f"Measured {big_endian_state} {count} times.")
+for(state, count) in counts.items():
+        # Get the value and format it
+        big_endian_state = state[::-1]
+        states = big_endian_state.split(' ')
+        index_state = states[0]
+        intensity_state = states[1]
+        value = index_state+intensity_state
+        print("Found value:", value, " It was found",count,"times")
 
 
 # Feel free to put other circuit experiments using this backend here and play around!

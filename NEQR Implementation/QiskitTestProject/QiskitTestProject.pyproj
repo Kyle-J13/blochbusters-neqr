@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>QiskitTestProject</Name>
     <RootNamespace>QiskitTestProject</RootNamespace>
-    <InterpreterId>CondaEnv|CondaEnv|qiskit-env</InterpreterId>
+    <InterpreterId>Global|VisualStudio|qiskit-env</InterpreterId>
     <TestFramework>unittest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="CondaEnv|CondaEnv|qiskit-env" />
+    <InterpreterReference Include="Global|VisualStudio|qiskit-env" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

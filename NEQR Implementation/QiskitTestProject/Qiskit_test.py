@@ -155,38 +155,86 @@ class Qiskit_test(unittest.TestCase):
         print("Done!\n")
 
         
-    def RandomSizeAndIntensities(self):
-
+    def test_randomSizeAndIntensities(self):
+        rangeExp = 8
         # Loop through several sizes
-        for scaleExp in range(1, 4):
-            # Loop through several grayscale ranges
-            for rangeExp in range(1, 9):
+        for scaleExp in range(1, 6):
                 
-                # The size of the conventional 2D array
-                size = 2 ** scaleExp
-                # The range for this iteration
-                grayscaleRange = 2 ** rangeExp
+            # The size of the conventional 2D array
+            size = 2 ** scaleExp
+            # The range for this iteration
+            grayscaleRange = 2 ** rangeExp
 
-                # 1D array with random values 
-                tempArr = []   
-                for val in range(0, size*size):
-                    randGrayscaleRange = random.randint(0, grayscaleRange)
-                    tempArr.append(randGrayscaleRange)
+            # 1D array with random values 
+            tempArr = []   
+            for val in range(0, size*size):
+                randGrayscaleRange = random.randint(0, grayscaleRange-1)
+                tempArr.append(randGrayscaleRange)
   
-                # resize to 2d array
-                _2dRand = np.resize(tempArr, (size, size))
+            # resize to 2d array
+            _2dRand = np.resize(tempArr, (size, size))
 
-                #work in progress from here
-                correctValues = FindCorrectValues(_2dRand, rangeExp, indexLength)
+            #work in progress from here
+            correctValues = findCorrectValues(_2dRand, rangeExp)
 
-                print("Grayscale Range:", grayscaleRange, "(", rangeExp, "qubits)")
-                print("Index Lenngth:", indexLength)
-                print("")
+            print(f"Grayscale Range: {grayscaleRange} ({rangeExp} qubits)")
+            print("Index Length:", 2 * scaleExp)
+            print("")
 
-                print ("2D Array:")
-                print(_2dRand)
+            for line in _2dRand:
+                print(line)
 
-                print("Correct Values:", correctValues)
+            # Create the circuit with the qiskit function
+            circuit = QiskitQuantumOperation.operation(_2dRand)
+
+            circuit.measure(circuit.qregs[0], circuit.cregs[0])
+            circuit.measure(circuit.qregs[1], circuit.cregs[1])
+
+            # Run the simulation
+            simulator = Aer.get_backend('aer_simulator')
+            simulation = execute(circuit, simulator, shots=10000)
+            result = simulation.result()
+            counts = result.get_counts(circuit)
+
+            # Where the unique values will be stored
+            resultValues = []
+            for(state, count) in counts.items():
+                    # Get the value and format it
+                    big_endian_state = state[::-1]
+                    states = big_endian_state.split(' ')
+                    index_state = states[0]
+                    intensity_state = states[1]
+                    value = index_state+intensity_state
+                    print("Found value:", value)
+
+                    # Check if we've measured it already
+                    if value in resultValues:
+                        pass
+                    else:
+                        # A unique value was found
+                        resultValues.append(index_state+intensity_state)
+                        print("Value:", value, "was unique!")
+
+                    if len(resultValues) == len(correctValues):
+                        # All unique values have been found
+                        break
+        
+            resultValues.sort(key=lambda x: int(x, 2))
+    
+            # Print the results
+            print("Correct values:", correctValues)
+            print("Result values:", resultValues)
+    
+    
+            if len(correctValues) != len(resultValues):
+                self.fail("There are more or less result values than there are unique values.")
+
+            # Make sure all of the values are correct
+            for result in resultValues:
+                if result not in correctValues:
+                    self.fail(f"The value {result} is incorrect")
+
+        print("Done!\n")
 
 
 
@@ -219,7 +267,7 @@ def findCorrectValues(_2dArray : List[List[int]], grayLen : int) -> List[str]:
     for row in range(len(_2dArray)):
         for col in range(len(_2dArray[row])):
             # Find the correct measurement for the index
-            index = padWithZeros(intToBinaryString(row), indexLen //2)
+            index = padWithZeros(intToBinaryString(row), indexLen // 2)
             index += padWithZeros(intToBinaryString(col), indexLen // 2)
 
             # Find the correct measurement for the intensity register
