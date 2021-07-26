@@ -94,6 +94,7 @@ def neqrImageProcess (
 
     for i in range(len(grayBinary)):
         if grayBinary[i]:
+            # 26 Qubits, 50 Depth: More Qubits, Less Depth
             ancilla = QuantumRegister(1)
             circuit.add_register(ancilla)
             controlAncilla = True
@@ -104,6 +105,7 @@ def neqrImageProcess (
                 circuit.x(ancilla)
             circuit.cx(ancilla, circuit.qregs[1][i]) 
 
+            # 7000 Depth, ~8 Qubits: More Depth, Less Qubits
             # circuit.mcx(circuit.qregs[0], circuit.qregs[1][i])
 
     for i in range(len(indexBinary)):
