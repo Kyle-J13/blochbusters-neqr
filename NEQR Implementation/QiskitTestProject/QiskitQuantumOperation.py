@@ -1,15 +1,32 @@
 from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
-from qiskit import execute
-from qiskit import Aer
-from qiskit.circuit.quantumregister import AncillaRegister
-import QiskitQuantumOperation
-import random
 import math
 
-from typing import Sequence, List, Union
+from typing import List, Union
 
 
 def operation (grayScaleValues : List[List[int]]) -> QuantumCircuit:
+    """Encode an image of 2ⁿx2ⁿ size into a quantum circuit and return the circuit
+
+    Parameters
+    ----------
+    grayScaleValues : List[List[int]]
+        A 2-Dimensional array of grayscale values with grayScaleValues[0][0] 
+        equal to the top-left pixel of the image
+        NOTE: Grayscale values are assumed to be in an 8 bit range (0-255)
+
+    Returns
+    -------
+    QuantumCircuit
+        The circuit with the encoded image 
+    
+    Circuit Information
+    -------------------
+        * The circuit does not have any measurement gates
+        * The index register is qregs[0]
+        * The grayscale intensity register is qregs[1]
+        * The index measurement register is cregs[0]
+        * The grayscale intensity measurement register is cregs[1]
+    """
     indexLen = 2 * round(math.log(len(grayScaleValues[0]), 2))
     indexPos = QuantumRegister(indexLen, "idx")
     intensity = QuantumRegister(8, "intensity")
@@ -37,6 +54,21 @@ def neqrImageProcess (
     col : int, 
     grayScaleValue : int
     ) -> None:
+    """Encode one pixel into the circuit
+
+    Parameters
+    ----------
+    circuit : QuantumCircuit
+        The quantum circuit to encode the pixel
+    lengthIndex : int
+        Length of the index register
+    row : int
+        Row of pixel in the image
+    col : int
+        Column of pixel in the image
+    grayScaleValue : int
+        Grayscale value of the pixel
+    """
     grayBinary = convertToBinary(grayScaleValue)
 
     rowBinary = convertToBinary(row)

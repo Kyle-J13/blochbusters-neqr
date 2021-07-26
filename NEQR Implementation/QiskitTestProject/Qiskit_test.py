@@ -3,7 +3,6 @@ import os
 import sys
 sys.path.insert(1, os.path.realpath(os.path.pardir))
 
-from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
 from qiskit import execute
 from qiskit import Aer
 import QiskitQuantumOperation
