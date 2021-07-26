@@ -23,6 +23,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="resource_estimation.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="QiskitQuantumOperation.py" />
     <Compile Include="Qiskit_test.py">
       <SubType>Code</SubType>
