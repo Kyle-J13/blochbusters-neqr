@@ -154,6 +154,43 @@ class Qiskit_test(unittest.TestCase):
 
         print("Done!\n")
 
+        
+    def RandomSizeAndIntensities(self):
+
+        # Loop through several sizes
+        for scaleExp in range(1, 4):
+            # Loop through several grayscale ranges
+            for rangeExp in range(1, 9):
+                
+                # The size of the conventional 2D array
+                size = 2 ** scaleExp
+                # The range for this iteration
+                grayscaleRange = 2 ** rangeExp
+
+                # 1D array with random values 
+                tempArr = []   
+                for grayscaleVal in range(0, size*size):
+                    randGrayscaleRange = random.randint(0, grayscaleRange)
+                    tempArr.append(randGrayscaleRange)
+  
+                # resize to 2d array
+                _2dRand = np.resize(tempArr, (size, size))
+       
+                # work in progress down here
+                correctValues = FindCorrectValues(_2dRand, rangeExp, indexLength)
+
+                print("Grayscale Range:", grayscaleRange, "(", rangeExp, "qubits)")
+                print("Index Lenngth:", indexLength)
+                print("")
+
+                print ("2D Array:")
+
+                print("Correct Values:", correctValues)
+
+
+
+
+
 # # # # # # # # # # # # # 
 #   Helper Functions    #
 # # # # # # # # # # # # # 
