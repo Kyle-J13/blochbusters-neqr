@@ -1,5 +1,3 @@
-# Copyright 2021 The MITRE Corporation. All Rights Reserved.
-
 from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
 from qiskit.providers.aer import AerSimulator
 from qiskit import IBMQ
@@ -8,10 +6,6 @@ from time import perf_counter
 from qiskit import execute
 from qiskit import Aer
 from QiskitQuantumOperation import operation
-import random
-import math
-
-from typing import Sequence, List, Union
 
 # Build the circuit
 start = perf_counter()

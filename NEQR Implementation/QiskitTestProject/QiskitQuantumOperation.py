@@ -1,4 +1,6 @@
 from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
+import numpy as np
+from PIL import Image
 import math
 
 from typing import List, Union
@@ -176,3 +178,9 @@ def padWithZeros(binary : Union[List, str], length : int, BE=True) -> Union[List
 
     return binary
 
+def main():
+    
+    pass
+
+if __name__ == '__main__':
+    main()
