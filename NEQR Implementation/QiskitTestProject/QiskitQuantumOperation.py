@@ -180,8 +180,9 @@ def padWithZeros(binary : Union[List, str], length : int, BE=True) -> Union[List
     return binary
 
 def main():
-    
-    pass
+    im = np.array(Image.open('img/4x4.png').convert('L'))
+
+    print(im)
 
 if __name__ == '__main__':
     main()
