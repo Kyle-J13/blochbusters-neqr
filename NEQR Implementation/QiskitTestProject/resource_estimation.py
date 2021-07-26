@@ -201,9 +201,14 @@ print(f"Gate counts: {circuit.count_ops()}")
 montreal_sim = AerSimulator.from_backend(montreal_backend)
 result = montreal_sim.run(circuit).result()
 counts = result.get_counts(circuit)
-for(measured_state, count) in counts.items():
-    big_endian_state = measured_state[::-1]
-    print(f"Measured {big_endian_state} {count} times.")
+for(state, count) in counts.items():
+        # Get the value and format it
+        big_endian_state = state[::-1]
+        states = big_endian_state.split(' ')
+        index_state = states[0]
+        intensity_state = states[1]
+        value = index_state+intensity_state
+        print("Found value:", value, " It was found",count,"times")
 
 
 # Feel free to put other circuit experiments using this backend here and play around!
