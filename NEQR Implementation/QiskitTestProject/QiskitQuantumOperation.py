@@ -94,7 +94,16 @@ def neqrImageProcess (
 
     for i in range(len(grayBinary)):
         if grayBinary[i]:
-            circuit.mcx(circuit.qregs[0], circuit.qregs[1][i]) 
+            ancilla = QuantumRegister(1)
+            controlAncilla = True
+            circuitAncilla = QuantumCircuit(ancilla)
+            for qubit in indexBinary:
+                if not qubit:
+                    controlAncilla = False
+            if controlAncilla:
+                circuitAncilla.x(ancilla)
+            circuit.cx(ancilla, circuit.qregs[1][i]) 
+            # circuit.mcx(circuit.qregs[0], circuit.qregs[1][i])
 
     for i in range(len(indexBinary)):
         if not indexBinary[i]:
