@@ -16,7 +16,7 @@ from QiskitQuantumOperation import operation
 from typing import List
 
 # Build the circuit
-def transpileFor(circuit : QuantumCircuit, backend : FakeBackend, optimizationLevel=2):
+def transpileFor(circuit : QuantumCircuit, backend : FakeBackend, optimizationLevel=1):
     print(f"Transpiling for {backend.name()} at optimization level {optimizationLevel}...")
     start = perf_counter()
     new_circuit = transpile(circuit, backend=backend, optimization_level=optimizationLevel)
@@ -35,12 +35,12 @@ def findWidth(circuit : QuantumCircuit):
 
     return circuit.num_qubits
 
-def transpileMultiple(circuit : QuantumCircuit, backendList : List[FakeBackend], optimizationLevel=2):
+def transpileMultiple(circuit : QuantumCircuit, backendList : List[FakeBackend], optimizationLevel=1, name=""):
     transpileInfo = {}
 
     for backend in backendList:
         nCirc, time = transpileFor(circuit, backend, optimizationLevel)
-        transpileInfo[backend.name()] = {
+        transpileInfo[(backend.name() + "-" + name)] = {
             "Transpile Time" : time,
             "Width" : findWidth(nCirc),
             "Depth" : nCirc.depth(),
@@ -52,6 +52,11 @@ def transpileMultiple(circuit : QuantumCircuit, backendList : List[FakeBackend],
 start = perf_counter()
 machineInfo = {}
 
+_2dArray = [
+            [0, 200],
+            [100, 255]
+        ]
+
 _4x4 = [
            [182, 200 , 1   , 50 ],
            [255, 75  , 175 , 200],
@@ -59,10 +64,8 @@ _4x4 = [
            [20 , 245 , 135 , 140]
        ]
 
-_2dArray = [
-            [0, 200],
-            [100, 255]
-        ]
+
+
 
 # Creating circuit
 circuit = operation(_2dArray)
@@ -91,7 +94,11 @@ machineInfo["Aer"] = {
 ## Transpile for several backends
 backends = (FakeMontreal(), FakeManhattan(), FakeToronto(), FakeSydney())
 
-machineInfo.update(transpileMultiple(circuit, backends))
+machineInfo.update(transpileMultiple(circuit, backends, name="2x2"))
+
+circuit = operation(_4x4)
+
+machineInfo.update(transpileMultiple(circuit, backends, name="4x4"))
 
 for key in machineInfo.keys():
     print(f"{key}:")
