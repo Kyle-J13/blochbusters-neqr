@@ -64,8 +64,17 @@ _2dArray = [
             [100, 255]
         ]
 
+_6x6 = [
+            [182, 200, 1, 51, 70, 90],
+            [255, 70, 172, 190, 210, 230],
+            [0, 50, 150, 130, 200, 175],
+            [10, 240, 100, 245, 150, 200],
+            [45, 175, 230, 190, 200, 10],
+            [0, 25, 230, 150, 120, 5],
+        ]
+
 # Creating circuit
-circuit = operation(_2dArray)
+circuit = operation(_6x6)
 circuit.measure(circuit.qregs[0], circuit.cregs[0])
 circuit.measure(circuit.qregs[1], circuit.cregs[1])
 
